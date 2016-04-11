@@ -1,17 +1,19 @@
 'use strict';
-   
+
+var _ = require('lodash');
 require("babel-polyfill")
-
-// var dir =  __dirname + '/node_modules/'
-// set babel in entry file
-require('babel-core/register')({
-  presets: [require('babel-preset-es2015-node5'), require('babel-preset-stage-3')],
-  babelrc: false
-})
-
 var fs = require('fs')
 
-module.exports = function (entry) {
+var defaultBabelConfig = {
+  presets: ['babel-preset-es2015-node5', 'babel-preset-stage-3'].map(function(p) {return require.resolve(p)}),
+  plugins: ['add-module-exports']
+};
+
+module.exports = function (entry, babelCustomConfig) {
+  // set babel in entry file
+  babelCustomConfig = _.isPlainObject(babelCustomConfig) ? babelCustomConfig : {};
+  require('babel-core/register')(_.defaultsDeep(defaultBabelConfig, babelCustomConfig))
+
   var current_path = process.cwd();
   var f = current_path + '/bin/www'
   if (entry){

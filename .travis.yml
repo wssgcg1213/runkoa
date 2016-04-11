@@ -1,0 +1,8 @@
+sudo: false
+language: node_js
+node_js:
+  - '5'
+  - '4'
+before_install:
+   - npm i npm@2 -g
+   - npm i npm@3 -g
